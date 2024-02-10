@@ -2,7 +2,7 @@ import React from 'react'
 import FooterLinks from './FooterLinks'
 const Footer = () => {
   return (
-    <div className='bg-slate-600 w-full h-60 relative'>
+    <div className='bg-slate-600 w-full h-52 relative'>
       <div>
         <FooterLinks label={"Contact Us"}/>
         <FooterLinks label={"About Us"}/>
