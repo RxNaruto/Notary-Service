@@ -6,8 +6,15 @@ const userSchema = new mongoose.Schema({
     password: String,
 })
 
+const adminSchema = new mongoose.Schema({
+    username: String,
+    password: String,
+})
+
 const User = mongoose.model("user",userSchema);
+const Admin = mongoose.model("admin",adminSchema);
 
 module.exports = {
-    User
+    User,
+    Admin
 }
