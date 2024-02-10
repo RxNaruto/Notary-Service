@@ -1,7 +1,9 @@
 const express = require("express");
 const { User } = require("../database/db");
 const router = express.Router();
-const {userSchema} = require("../types/user")
+const jwt =require("jsonwebtoken");
+const {userSchema} = require("../types/user");
+const { JWT_SECRET } = require("../config");
 
 router.get("/",(req,res)=>{
     res.json({
@@ -18,13 +20,18 @@ router.post("/signup",async(req,res)=>{
         })
 
     }
+    
     const newUser = await User.create({
         username: body.username,
         password: body.password
     })
+    const userId = newUser._id
+    const token = jwt.sign({userId},JWT_SECRET);
+
     if(newUser){
         res.json({
-            msg: "User created Successfully"
+            msg: "User created Successfully",
+            token: token
         })
     }
     else{
