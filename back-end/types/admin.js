@@ -1,10 +1,10 @@
 const zod = require("zod");
 
-const userSchema = zod.object({
+const adminSchema = zod.object({
     username: zod.string().email(),
     password: zod.string().min(8)
 })
 
 module.exports ={
-    userSchema
+    adminSchema
 }
