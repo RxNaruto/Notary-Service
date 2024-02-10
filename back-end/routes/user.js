@@ -4,6 +4,7 @@ const router = express.Router();
 const jwt =require("jsonwebtoken");
 const {userSchema} = require("../types/user");
 const { JWT_SECRET } = require("../config");
+const { userAuthMiddleware } = require("../middleware/userMiddleware");
 
 router.get("/",(req,res)=>{
     res.json({
@@ -39,6 +40,12 @@ router.post("/signup",async(req,res)=>{
             msg: "Internal Server error"
         })
     }
+})
+router.get("/checkin",userAuthMiddleware,(req,res)=>{
+    res.json({
+        msg: "you are logged in"
+    })
+
 })
 
 
