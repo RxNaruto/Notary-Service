@@ -1,6 +1,7 @@
 const express = require("express");
 const { User } = require("../database/db");
 const router = express.Router();
+const {userSchema} = require("../types/user")
 
 router.get("/",(req,res)=>{
     res.json({
@@ -10,6 +11,13 @@ router.get("/",(req,res)=>{
 
 router.post("/signup",async(req,res)=>{
     const body = req.body;
+    const userValidation = userSchema.safeParse(body);
+    if(!userValidation.success){
+        return res.status(404).json({
+            msg: "Incorrect input"
+        })
+
+    }
     const newUser = await User.create({
         username: body.username,
         password: body.password
@@ -25,5 +33,9 @@ router.post("/signup",async(req,res)=>{
         })
     }
 })
+
+
+
+
 
 module.exports=router; 

@@ -1,5 +1,6 @@
 const express = require("express");
 const { Admin } = require("../database/db");
+const { adminSchema } = require("../types/admin");
 const router = express.Router();
 
 
@@ -11,6 +12,12 @@ router.get("/",(req,res)=>{
 
 router.post("/signup",async(req,res)=>{
     const body = req.body;
+    const adminValidation = adminSchema.safeParse(body);
+    if(!adminValidation.success){
+        return res.status(404).json({
+            msg: "Incorrect input"
+        })
+    }
     const newUser = await Admin.create({
         username: body.username,
         password: body.password
