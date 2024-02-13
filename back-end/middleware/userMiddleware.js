@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const {JWT_SECRET} = require("../config");
+const { User } = require("../database/db");
 
 const userAuthMiddleware=(req,res,next)=>{
     const authHeader = req.headers.authorization;
@@ -17,6 +18,25 @@ const userAuthMiddleware=(req,res,next)=>{
         return res.status(403).json({});
     }
 };
+
+const userLoginMiddleware = async(req,res,next)=>{
+    const username= req.headers.username;
+    const password= req.headers.password;
+
+    const checkUser = await User.findOne({
+        username: username,
+        password: password
+    })
+    if(checkUser){
+        next();
+    }
+    else{
+        res.status(404).json({
+            msg: "User not found"
+        })
+    }
+}
 module.exports={
-    userAuthMiddleware
+    userAuthMiddleware,
+    userLoginMiddleware
 }

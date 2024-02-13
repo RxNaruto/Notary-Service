@@ -4,7 +4,7 @@ const router = express.Router();
 const jwt =require("jsonwebtoken");
 const {userSchema} = require("../types/user");
 const { JWT_SECRET } = require("../config");
-const { userAuthMiddleware } = require("../middleware/userMiddleware");
+const { userAuthMiddleware, userLoginMiddleware } = require("../middleware/userMiddleware");
 
 router.get("/",(req,res)=>{
     res.json({
@@ -46,6 +46,31 @@ router.get("/checkin",userAuthMiddleware,(req,res)=>{
         msg: "you are logged in"
     })
 
+})
+
+router.post("/login",userLoginMiddleware,async (req,res)=>{
+    const username= req.headers.username;
+    const password= req.headers.password;
+
+    const checkUser = await User.findOne({
+        username: username,
+        password: password
+    })
+    
+    if(checkUser){
+        const userId = checkUser._id
+        const token = jwt.sign({userId},JWT_SECRET);
+        res.json({
+            msg: "User login successful",
+            token: token
+        })
+    }
+    else{
+        res.status(404).json({
+            msg: "User not found"
+        })
+    }
+    
 })
 
 
