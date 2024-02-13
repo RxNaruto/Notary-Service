@@ -11,10 +11,21 @@ const adminSchema = new mongoose.Schema({
     password: String,
 })
 
+const documentSchema = new mongoose.Schema({
+    aadharCard: String,
+    panCard: String,
+    user:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'User'
+    }]
+})
+
 const User = mongoose.model("user",userSchema);
 const Admin = mongoose.model("admin",adminSchema);
+const Document = mongoose.model("documents",documentSchema);
 
 module.exports = {
     User,
-    Admin
+    Admin,
+    Document
 }
