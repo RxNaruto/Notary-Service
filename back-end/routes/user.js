@@ -1,5 +1,5 @@
 const express = require("express");
-const { User } = require("../database/db");
+const { User,Document } = require("../database/db");
 const router = express.Router();
 const jwt =require("jsonwebtoken");
 const {userSchema} = require("../types/user");
@@ -71,6 +71,18 @@ router.post("/login",userLoginMiddleware,async (req,res)=>{
         })
     }
     
+})
+
+router.post("/dcsub:/userId",async(req,res)=>{
+    const userId = req.params.userId;
+    const addDoc= await Document.create({
+        aadharcard: req.body.aadharcard,
+        pancard: req.body.pancard  
+    },{
+        "$push": {
+           user: userId
+        }
+    })
 })
 
 
